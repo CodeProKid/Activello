@@ -120,7 +120,6 @@ function activello_widgets_init() {
   register_widget( 'activello_social_widget' );
   register_widget( 'activello_recent_posts' );
   register_widget( 'activello_categories' );
-  register_widget( 'activello_instagram_widget' );
 }
 add_action( 'widgets_init', 'activello_widgets_init' );
 
@@ -131,7 +130,6 @@ add_action( 'widgets_init', 'activello_widgets_init' );
 require_once(get_template_directory() . '/inc/widgets/widget-categories.php');
 require_once(get_template_directory() . '/inc/widgets/widget-social.php');
 require_once(get_template_directory() . '/inc/widgets/widget-recent-posts.php');
-require_once(get_template_directory() . '/inc/widgets/widget-instagram.php');
 
 /**
  * This function removes inline styles set by WordPress gallery.
@@ -180,11 +178,6 @@ function activello_scripts() {
 
   // This one is for accessibility
   wp_enqueue_script( 'activello-skip-link-focus-fix', get_template_directory_uri() . '/inc/js/skip-link-focus-fix.js', array(), '20140222', true );
-
-  // Add instafeed/instagram
-  if( is_active_widget( false, false, 'activello-instagram', true ) ){
-    wp_enqueue_script('activello-instafeedjs', get_template_directory_uri().'/inc/js/instafeed.min.js', array('jquery') );	
-  }
 	
   // Threaded comments
   if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
