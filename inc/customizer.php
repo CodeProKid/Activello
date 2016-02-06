@@ -20,176 +20,181 @@ add_action( 'customize_register', 'activello_customize_register' );
  */
 function activello_customizer( $wp_customize ) {
 
-	// logo
-	$wp_customize->add_setting( 'header_logo', array(
-		'default' => '',
-		'transport'   => 'refresh',
-                'sanitize_callback' => 'activello_sanitize_number'
-	) );
-        $wp_customize->add_control(new WP_Customize_Media_Control( $wp_customize, 'header_logo', array(
-    		'label' => __( 'Logo', 'activello' ),
-    		'section' => 'title_tagline',
-    		'mime_type' => 'image',
-    		'priority'  => 10,
-    	) ) );
-    	
-    	
-    global $header_show;
-    $wp_customize->add_setting('header_show', array(
-            'default' => 'logo-text',
-            'sanitize_callback' => 'activello_sanitize_radio_header'
-        ));    
-        $wp_customize->add_control('header_show', array(
-            'type' => 'radio',
-            'label' => __('Show', 'activello'),
-            'section' => 'title_tagline',
-            'choices' => $header_show
-        ));
-        
-        /* Main option Settings Panel */
-    $wp_customize->add_panel('activello_main_options', array(
-        'capability' => 'edit_theme_options',
-        'theme_supports' => '',
-        'title' => __('Activello Options', 'activello'),
-        'description' => __('Panel to update activello theme options', 'activello'), // Include html tags such as <p>.
-        'priority' => 10 // Mixed with top-level-section hierarchy.
-    ));
+		// logo
+		$wp_customize->add_setting( 'header_logo', array(
+				'default'           => '',
+				'transport'         => 'refresh',
+				'sanitize_callback' => 'activello_sanitize_number',
+		) );
 
-	// add "Content Options" section
-	$wp_customize->add_section( 'activello_content_section' , array(
-		'title'      => esc_html__( 'Content Options', 'activello' ),
-		'priority'   => 50,
-                'panel' => 'activello_main_options'
-	) );
+		$wp_customize->add_control(new WP_Customize_Media_Control( $wp_customize, 'header_logo', array(
+		    'label'     => __( 'Logo', 'activello' ),
+		    'section'   => 'title_tagline',
+		    'mime_type' => 'image',
+		    'priority'  => 10,
+		) ) );
 
-	// add setting for excerpts/full posts toggle
-	$wp_customize->add_setting( 'activello_excerpts', array(
-		'default'           => 1,
-		'sanitize_callback' => 'activello_sanitize_checkbox',
-	) );
+		global $header_show;
+	  $wp_customize->add_setting('header_show', array(
+			  'default'           => 'logo-text',
+		    'sanitize_callback' => 'activello_sanitize_radio_header',
+	  ));
 
-	// add checkbox control for excerpts/full posts toggle
-	$wp_customize->add_control( 'activello_excerpts', array(
-		'label'     => esc_html__( 'Show post excerpts?', 'activello' ),
-		'section'   => 'activello_content_section',
-		'priority'  => 10,
-		'type'      => 'checkbox'
-	) );
+	  $wp_customize->add_control('header_show', array(
+		    'type'    => 'radio',
+		    'label'   => __('Show', 'activello'),
+		    'section' => 'title_tagline',
+		    'choices' => $header_show,
+	  ));
 
-	$wp_customize->add_setting( 'activello_page_comments', array(
-		'default' => 1,
-		'sanitize_callback' => 'activello_sanitize_checkbox',
-	) );
+		/* Main option Settings Panel */
+	  $wp_customize->add_panel('activello_main_options', array(
+		    'capability'     => 'edit_theme_options',
+		    'theme_supports' => '',
+		    'title'          => __('Activello Options', 'activello'),
+		    'description'    => __('Panel to update activello theme options', 'activello'), // Include html tags such as <p>.
+		    'priority'       => 10, // Mixed with top-level-section hierarchy.
+	  ));
 
-	$wp_customize->add_control( 'activello_page_comments', array(
-		'label'		=> esc_html__( 'Display Comments on Static Pages?', 'activello' ),
-		'section'	=> 'activello_content_section',
-		'priority'	=> 20,
-		'type'      => 'checkbox',
-	) );
-	
-	
-	// add "Featured Posts" section
-	$wp_customize->add_section( 'activello_featured_section' , array(
-		'title'      => esc_html__( 'Slider Option', 'activello' ),
-		'priority'   => 60,
-                'panel' => 'activello_main_options'
-	) );	
-	
-	$wp_customize->add_setting( 'activello_featured_cat', array(
-		'default' => 0,
-		'transport'   => 'refresh',
-                'sanitize_callback' => 'activello_sanitize_slidecat'
-	) );	
-	
-	$wp_customize->add_control( 'activello_featured_cat', array(
-		'type' => 'select',
-		'label' => 'Choose a category',
-		'choices' => activello_cats(),
-		'section' => 'activello_featured_section',
-	) );
-	
-	$wp_customize->add_setting( 'activello_featured_hide', array(
-		'default' => 0,
-		'transport'   => 'refresh',
-                'sanitize_callback' => 'activello_sanitize_checkbox'
-	) );	
-	
-	$wp_customize->add_control( 'activello_featured_hide', array(
-		'type' => 'checkbox',
-		'label' => 'Show Slider',
-		'section' => 'activello_featured_section',
-	) );	
-	
-	
-	// add "Sidebar" section
-        $wp_customize->add_section('activello_layout_section', array(
-            'title' => __('Layout options', 'activello'),
-            'description' => sprintf(__('', 'activello')),
-            'priority' => 31,
-            'panel' => 'activello_main_options'
-        ));
-            // Layout options
-            global $site_layout;
-            $wp_customize->add_setting('activello_sidebar_position', array(
-                 'default' => 'side-right',
-                 'sanitize_callback' => 'activello_sanitize_layout'
-            ));
-            $wp_customize->add_control('activello_sidebar_position', array(
-                 'label' => __('Website Layout Options', 'activello'),
-                 'section' => 'activello_layout_section',
-                 'type'    => 'select',
-                 'description' => __('Choose between different layout options to be used as default', 'activello'),
-                 'choices'    => $site_layout
-            ));	
-	
-            $wp_customize->add_setting('accent_color', array(
-                    'default' => '',
-                    'sanitize_callback' => 'activello_sanitize_hexcolor'
-                ));
-            $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'accent_color', array(
-                'label' => __('Accent Color', 'activello'),
-                'description'   => __('Default used if no color is selected','activello'),
-                'section' => 'activello_layout_section',
-            )));
-            
-            $wp_customize->add_setting('social_color', array(
-                'default' => '',
-                'sanitize_callback' => 'activello_sanitize_hexcolor'
-            ));
-            $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'social_color', array(
-                'label' => __('Social icon color', 'activello'),
-                'description' => sprintf(__('Default used if no color is selected', 'activello')),
-                'section' => 'activello_layout_section',
-            )));
+		// add "Content Options" section
+		$wp_customize->add_section( 'activello_content_section' , array(
+				'title'      => esc_html__( 'Content Options', 'activello' ),
+				'priority'   => 50,
+				'panel'      => 'activello_main_options',
+		) );
 
-            $wp_customize->add_setting('social_hover_color', array(
-                'default' => '',
-                'sanitize_callback' => 'activello_sanitize_hexcolor'
-            ));
-            $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'social_hover_color', array(
-                'label' => __('Social Icon:hover Color', 'activello'),
-                'description' => sprintf(__('Default used if no color is selected', 'activello')),
-                'section' => 'activello_layout_section',
-            )));
-	
-	// add "Footer" section
-	$wp_customize->add_section( 'activello_footer_section' , array(
-		'title'      => esc_html__( 'Footer', 'activello' ),
-		'priority'   => 90,
-	) );	
-	
-	$wp_customize->add_setting( 'activello_footer_copyright', array(
-		'default' => '',
-		'transport'   => 'refresh',
-                'sanitize_callback' => 'activello_sanitize_strip_slashes'
-	) );
+		// add setting for excerpts/full posts toggle
+		$wp_customize->add_setting( 'activello_excerpts', array(
+				'default'           => 1,
+				'sanitize_callback' => 'activello_sanitize_checkbox',
+		) );
 
-	$wp_customize->add_control( 'activello_footer_copyright', array(
-		'type' => 'textarea',
-		'label' => 'Copyright Text',
-		'section' => 'activello_footer_section',
-	) );
+		// add checkbox control for excerpts/full posts toggle
+		$wp_customize->add_control( 'activello_excerpts', array(
+				'label'     => esc_html__( 'Show post excerpts?', 'activello' ),
+				'section'   => 'activello_content_section',
+				'priority'  => 10,
+				'type'      => 'checkbox',
+		) );
+
+		$wp_customize->add_setting( 'activello_page_comments', array(
+				'default'           => 1,
+				'sanitize_callback' => 'activello_sanitize_checkbox',
+		) );
+
+		$wp_customize->add_control( 'activello_page_comments', array(
+				'label'		  => esc_html__( 'Display Comments on Static Pages?', 'activello' ),
+				'section'	  => 'activello_content_section',
+				'priority'	=> 20,
+				'type'      => 'checkbox',
+		) );
+
+
+		// add "Featured Posts" section
+		$wp_customize->add_section( 'activello_featured_section' , array(
+				'title'      => esc_html__( 'Slider Option', 'activello' ),
+				'priority'   => 60,
+		    'panel'      => 'activello_main_options',
+		) );
+
+		$wp_customize->add_setting( 'activello_featured_cat', array(
+				'default'           => 0,
+				'transport'         => 'refresh',
+		    'sanitize_callback' => 'activello_sanitize_slidecat',
+		) );
+
+		$wp_customize->add_control( 'activello_featured_cat', array(
+				'type' => 'select',
+				'label' => 'Choose a category',
+				'choices' => activello_cats(),
+				'section' => 'activello_featured_section',
+		) );
+
+		$wp_customize->add_setting( 'activello_featured_hide', array(
+				'default'           => 0,
+				'transport'         => 'refresh',
+		    'sanitize_callback' => 'activello_sanitize_checkbox',
+		) );
+
+		$wp_customize->add_control( 'activello_featured_hide', array(
+				'type'    => 'checkbox',
+				'label'   => 'Show Slider',
+				'section' => 'activello_featured_section',
+		) );
+
+		// add "Sidebar" section
+	  $wp_customize->add_section('activello_layout_section', array(
+				'title'       => __('Layout options', 'activello'),
+				'description' => sprintf(__('', 'activello')),
+				'priority'    => 31,
+				'panel'       => 'activello_main_options',
+	  ));
+
+	  // Layout options
+	  global $site_layout;
+	  $wp_customize->add_setting('activello_sidebar_position', array(
+				'default'           => 'side-right',
+				'sanitize_callback' => 'activello_sanitize_layout',
+	  ));
+
+	  $wp_customize->add_control('activello_sidebar_position', array(
+				'label'       => __('Website Layout Options', 'activello'),
+				'section'     => 'activello_layout_section',
+				'type'        => 'select',
+				'description' => __('Choose between different layout options to be used as default', 'activello'),
+				'choices'     => $site_layout,
+	  ));
+
+	  $wp_customize->add_setting('accent_color', array(
+		    'default'           => '',
+		    'sanitize_callback' => 'activello_sanitize_hexcolor',
+	  ));
+
+	  $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'accent_color', array(
+				'label'       => __('Accent Color', 'activello'),
+				'description' => __('Default used if no color is selected','activello'),
+				'section'     => 'activello_layout_section',
+	  )));
+
+	  $wp_customize->add_setting('social_color', array(
+		    'default'           => '',
+		    'sanitize_callback' => 'activello_sanitize_hexcolor',
+	  ));
+
+	  $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'social_color', array(
+		    'label'       => __('Social icon color', 'activello'),
+		    'description' => sprintf(__('Default used if no color is selected', 'activello')),
+		    'section'     => 'activello_layout_section',
+	  )));
+
+	  $wp_customize->add_setting('social_hover_color', array(
+		    'default'           => '',
+		    'sanitize_callback' => 'activello_sanitize_hexcolor',
+	  ));
+
+	  $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'social_hover_color', array(
+		    'label'       => __('Social Icon:hover Color', 'activello'),
+		    'description' => sprintf(__('Default used if no color is selected', 'activello')),
+		    'section'     => 'activello_layout_section',
+	  )));
+
+		// add "Footer" section
+		$wp_customize->add_section( 'activello_footer_section' , array(
+				'title'    => esc_html__( 'Footer', 'activello' ),
+				'priority' => 90,
+		));
+
+		$wp_customize->add_setting( 'activello_footer_copyright', array(
+				'default'           => '',
+				'transport'         => 'refresh',
+				'sanitize_callback' => 'activello_sanitize_strip_slashes',
+		));
+
+		$wp_customize->add_control( 'activello_footer_copyright', array(
+				'type'    => 'textarea',
+				'label'   => 'Copyright Text',
+				'section' => 'activello_footer_section',
+		));
 
 }
 add_action( 'customize_register', 'activello_customizer' );
