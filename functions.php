@@ -100,6 +100,8 @@ function activello_setup() {
    */
   add_theme_support( 'title-tag' );
 
+  add_theme_support( 'jetpack-social-menu' );
+
 }
 endif; // activello_setup
 add_action( 'after_setup_theme', 'activello_setup' );
@@ -117,15 +119,8 @@ function activello_widgets_init() {
     'after_title'   => '</h3>',
   ));
 
-  register_widget( 'activello_social_widget' );
 }
 add_action( 'widgets_init', 'activello_widgets_init' );
-
-
-/* --------------------------------------------------------------
-       Theme Widgets
--------------------------------------------------------------- */
-require_once(get_template_directory() . '/inc/widgets/widget-social.php');
 
 /**
  * This function removes inline styles set by WordPress gallery.
