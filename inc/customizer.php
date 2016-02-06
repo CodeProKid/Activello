@@ -190,39 +190,6 @@ function activello_customizer( $wp_customize ) {
 		'label' => 'Copyright Text',
 		'section' => 'activello_footer_section',
 	) );
-        
-        /* Activello Other Options */
-        $wp_customize->add_section('activello_other_options', array(
-            'title' => __('Other', 'activello'),
-            'priority' => 70,
-            'panel' => 'activello_main_options'
-        ));
-            $wp_customize->add_setting('custom_css', array(
-                'default' => '',
-                'sanitize_callback' => 'activello_sanitize_strip_slashes'
-            ));
-            $wp_customize->add_control('custom_css', array(
-                'label' => __('Custom CSS', 'activello'),
-                'description' => sprintf(__('Additional CSS', 'activello')),
-                'section' => 'activello_other_options',
-                'type' => 'textarea'
-            ));
-            
-        /* Support & Documentation */
-        $wp_customize->add_section('activello_important_links', array(
-        'priority' => 5,
-        'title' => __('Support and Documentation', 'activello')
-        ));
-            $wp_customize->add_setting('activello[imp_links]', array(
-              'sanitize_callback' => 'esc_url_raw'
-            ));
-            $wp_customize->add_control(
-            new Activello_Important_Links(
-            $wp_customize,
-                'activello[imp_links]', array(
-                'section' => 'activello_important_links',
-                'type' => 'activello-important-links'
-            )));
 
 }
 add_action( 'customize_register', 'activello_customizer' );
@@ -322,50 +289,6 @@ function activello_customizer_custom_control_css() {
     </style><?php
 }
 add_action( 'customize_controls_print_styles', 'activello_customizer_custom_control_css' );
-
-if ( ! class_exists( 'WP_Customize_Control' ) )
-    return NULL;
-/**
- * Class to create a Activello important links
- */
-class Activello_Important_Links extends WP_Customize_Control {
-
-   public $type = "activello-important-links";
-
-   public function render_content() {?>
-        <!-- Twitter -->
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-        <!-- Facebook -->
-        <div id="fb-root"></div>
-        <div id="fb-root"></div>
-        <script>
-            (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=328285627269392";
-            fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>
-
-        <div class="inside">
-            <div id="social-share">
-              <div class="fb-like" data-href="https://www.facebook.com/colorlib" data-send="false" data-layout="button_count" data-width="90" data-show-faces="true"></div>
-              <div class="tw-follow" ><a href="https://twitter.com/colorlib" class="twitter-follow-button" data-show-count="false">Follow @colorlib</a></div>
-            </div>
-            <p><b><a href="http://colorlib.com/wp/support/activello"><?php _e('Activello Documentation','activello'); ?></a></b></p>
-            <p><?php _e('The best way to contact us with <b>support questions</b> and <b>bug reports</b> is via','activello') ?> <a href="http://colorlib.com/wp/forums"><?php _e('Colorlib support forum','activello') ?></a>.</p>
-            <p><?php _e('If you like this theme, I\'d appreciate any of the following:','activello') ?></p>
-            <ul>
-                <li><a class="button" href="http://wordpress.org/support/view/theme-reviews/activello?filter=5" title="<?php esc_attr_e('Rate this Theme', 'activello'); ?>" target="_blank"><?php printf(__('Rate this Theme','activello')); ?></a></li>
-                <li><a class="button" href="http://www.facebook.com/colorlib" title="Like Colorlib on Facebook" target="_blank"><?php printf(__('Like on Facebook','activello')); ?></a></li>
-                <li><a class="button" href="http://twitter.com/colorlib/" title="Follow Colrolib on Twitter" target="_blank"><?php printf(__('Follow on Twitter','activello')); ?></a></li>
-            </ul>
-        </div><?php
-   }
-
-}
 
 /*
  * Custom Scripts

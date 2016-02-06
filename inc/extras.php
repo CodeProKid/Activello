@@ -345,10 +345,6 @@ if (!function_exists('get_activello_theme_setting'))  {
       echo '#social a:hover, .header-search-icon:hover { color:' . get_theme_mod('social_hover_color') .'}';
     }
 
-    if ( get_theme_mod('custom_css')) {
-      echo html_entity_decode( get_theme_mod( 'custom_css', 'no entry' ) );
-    }
-
     echo '</style>';
   }
 }
